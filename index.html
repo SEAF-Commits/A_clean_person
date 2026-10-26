@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>ملاحظات</title>
+<style>
+:root{--bg:#f6f7f4;--cd:#fff;--tx:#1d2a26;--mu:#66736e;--ac:#2f7d6b;--a2:#e7f3ef;--bad:#c4513f;--bd:#dfe5e1;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111815;--cd:#1a2420;--tx:#e8efec;--mu:#9aaaa3;--ac:#4cb89f;--a2:#1f332d;--bad:#e07a68;--bd:#2a3732}}
+:root[data-theme="dark"]{--bg:#111815;--cd:#1a2420;--tx:#e8efec;--mu:#9aaaa3;--ac:#4cb89f;--a2:#1f332d;--bad:#e07a68;--bd:#2a3732}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.7 system-ui,"Segoe UI",Tahoma,sans-serif;padding-bottom:80px}
+main{max-width:620px;margin:auto;padding:14px}
+.c{background:var(--cd);border:1px solid var(--bd);border-radius:16px;padding:16px;margin-bottom:12px}
+h2{margin:0 0 8px;font-size:18px}.mu{color:var(--mu);font-size:14px}
+.big{font-size:64px;font-weight:700;color:var(--ac);line-height:1.1;text-align:center}
+button,.b{font:inherit;border:0;border-radius:12px;padding:11px 16px;background:var(--ac);color:#fff;cursor:pointer}
+.b2{background:var(--a2);color:var(--ac)}.bd{background:var(--bad)}.w{width:100%;margin-top:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1}
+nav{position:fixed;bottom:0;inset-inline:0;background:var(--cd);border-top:1px solid var(--bd);display:flex;padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;background:none;color:var(--mu);border-radius:0;font-size:13px;padding:10px 2px}nav button.on{color:var(--ac);font-weight:700}
+input,select,textarea{font:inherit;width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);margin:4px 0 10px}
+.chip{display:inline-block;padding:6px 12px;margin:3px;border-radius:20px;border:1px solid var(--bd);cursor:pointer;font-size:14px}.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.ov{position:fixed;inset:0;background:var(--bg);z-index:9;overflow:auto;padding:calc(14px + env(safe-area-inset-top,0px)) 14px 30px}.ov>div{max-width:620px;margin:auto}
+.ring{width:130px;height:130px;border-radius:50%;background:var(--a2);border:3px solid var(--ac);margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:20px;animation:br 10s ease-in-out infinite}
+@keyframes br{0%,100%{transform:scale(.7)}40%{transform:scale(1.15)}}
+details{border-top:1px solid var(--bd);padding:8px 0}summary{cursor:pointer;font-weight:600}
+.ck{display:flex;gap:8px;align-items:center;padding:6px 0}.ck input{width:22px;margin:0}
+.q{border-inline-start:3px solid var(--ac);padding:4px 10px;margin:8px 0;background:var(--a2);border-radius:6px}
+.nd{border-inline-start:3px solid var(--bd);padding:2px 12px 12px;margin-inline-start:10px}.nd.p{border-color:var(--ac)}.nd.cu{background:var(--a2);border-radius:10px}.nd.f{opacity:.5}
+</style></head><body><main id="m"></main>
+<nav id="nv"></nav><div id="ov"></div>
+<script>
+const K='nt1',$=s=>document.querySelector(s),E=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let S={},tab='h',sel={},tm;
+try{S=JSON.parse(localStorage.getItem(K))||{}}catch(e){}
+S.logs=S.logs||[];S.start=S.start||Date.now();S.best=S.best||0;S.ck=S.ck||{};if(S.rel===undefined)S.rel=true;S.pt=S.pt||{};
+const sv=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};sv();
+const R=['ملل وفراغ','وحدة','توتر وضغط','سهر وموبايل في السرير','تصفح عشوائي أو فضول','زعل أو إحباط','لوحدي في البيت','مشهد أو إعلان مثير'],
+P=['السرير','الحمام','الأوضة','برا البيت','الشغل أو الدراسة','مكان تاني'];
+const days=()=>Math.floor((Date.now()-S.start)/864e5),dur=ms=>{let h=Math.floor(ms/36e5),d=Math.floor(h/24);return d?d+' يوم و'+h%24+' ساعة':h+' ساعة'};
+const best=()=>Math.max(S.best,days());
+const free30=()=>{let s=new Set(S.logs.filter(l=>l.type=='r'&&Date.now()-l.t<30*864e5).map(l=>new Date(l.t).toDateString()));return 30-s.size};
+const topv=a=>{let c={};a.filter(Boolean).forEach(x=>c[x]=(c[x]||0)+1);let e=Object.entries(c).sort((x,y)=>y[1]-x[1])[0];return e?e[0]+' ('+e[1]+' مرة)':'—'};
+const tg=(k,v)=>{sel[k]=sel[k]||[];let i=sel[k].indexOf(v);i<0?sel[k].push(v):sel[k].splice(i,1);event.target.classList.toggle('on')};
+const chips=(k,a)=>a.map(x=>`<span class="chip" onclick="tg('${k}','${x}')">${x}</span>`).join('');
+const MSG=['أول يوم هو الأصعب، وإنت لسه بتبني الأساس.','كل ساعة بتعدي من غير ما تستسلم بتقوّي إرادتك.','الرغبة موجة وهتعدي، افتكر ده.','إنت مش لوحدك، ناس كتير بتعدي بنفس الرحلة.','اللي بيقع ويقوم أقوى من اللي ما جربش.'];
+function nav(){$('#nv').innerHTML=[['h','الرئيسية'],['j','رحلتي'],['a','تحليل'],['p','الخطة'],['i','توعية']].map(([k,n])=>`<button class="${tab==k?'on':''}" onclick="tab='${k}';draw()">${n}</button>`).join('')}
+function draw(){nav();let h='';
+if(tab=='h')h=`<div class=c><b>${greet()}</b></div><div class=c style='display:flex;gap:12px;align-items:center'><div style='font-size:44px'>${av()}</div><div><b>${ttl()}</b><div class=q>${jm()}</div></div></div><div class="c"><div class="mu" style="text-align:center">أيام الثبات الحالية</div><div class="big">${days()}</div><div class="mu" style="text-align:center">${dur(Date.now()-S.start)} · أطول فترة: ${best()} يوم · ${free30()} من آخر 30 يوم نضيفة</div><p style="text-align:center">${MSG[days()%MSG.length]}</p></div>
+<button class="w" style="padding:20px;font-size:20px" onclick="sos()">🆘 الرغبة جاتلي دلوقتي</button>
+<div class="row" style="margin-top:8px"><button class="b2" onclick="urge()">عدّت رغبة وصمدت ✅</button><button class="bd" onclick="rel()">حصلت انتكاسة</button></div>
+<div class="c" style="margin-top:12px"><h2>مهام النهارده</h2>${ckl()}</div>`;
+if(tab=='j')h=jr();if(tab=='a'){let L=S.logs,r=L.filter(l=>l.type=='r'),u=L.filter(l=>l.type=='u');
+h=`<div class="c"><h2>الأنماط بتاعتك</h2><p>نسبة صمودك قدام الرغبات: <b>${u.length+r.length?Math.round(100*u.length/(u.length+r.length))+'%':'—'}</b> · انتكاسات آخر 7 أيام: <b>${r.filter(l=>Date.now()-l.t<6048e5).length}</b> مقابل <b>${r.filter(l=>{let a=Date.now()-l.t;return a>=6048e5&&a<12096e5}).length}</b> في الأسبوع اللي قبله</p><p>انتكاسات مسجلة: <b>${r.length}</b> · رغبات صمدت قدامها: <b>${u.length}</b></p><p>أكتر سبب: <b>${E(topv(L.flatMap(l=>l.why||[])))}</b></p><p>أكتر مكان: <b>${E(topv(r.map(l=>l.place)))}</b></p><p>أكتر وقت: <b>${E(topv(L.map(l=>{let H=new Date(l.t).getHours();return H<5?'بعد منتصف الليل':H<12?'الصبح':H<17?'العصر':H<21?'المغرب':'بالليل'})))}</b></p><p>متوسط الصمود قبل الانتكاسة: <b>${r.length?dur(r.reduce((a,l)=>a+(l.held||0),0)/r.length):'—'}</b></p><p class="mu">كل ما سجلت أكتر، التحليل بقى أدق، وتعرف تغيّر بيئتك عند أضعف نقطة.</p></div>
+<div class="c"><h2>آخر السجلات</h2>${L.slice(-10).reverse().map(l=>`<div class="q">${l.type=='r'?'🔴 انتكاسة':'🟢 رغبة وصمدت'} · ${new Date(l.t).toLocaleString('ar-EG')}<br><span class="mu">${E((l.why||[]).join('، '))}${l.place?' · '+E(l.place):''}${l.n?' · '+l.n+' مرة':''}${l.note?'<br>'+E(l.note):''}</span></div>`).join('')||'<span class="mu">لسه مفيش سجلات</span>'}</div>`}
+if(tab=='p')h=`${kitUI()}<div class=c><h2>🛡️ قفل الحجب</h2>${S.blk?`<p>الحجب مفعّل ✅ ولإيقافه لازم تعدّي تحدي رياضة ووقت تهدئة.</p><button class='bd w' onclick=unb()>عايز أوقف الحجب</button>`:`<p class=mu>اعمل إعداد DNS من الكارت اللي تحت، وبعدين فعّل هنا. التطبيق مش بيقدر يحجب بنفسه من المتصفح، لكنه بيحميك من قرار الإيقاف الاندفاعي.</p><button class=w onclick=blkOn()>فعّلت الحجب</button>`}</div><div class="c"><h2>🌙 روتين النوم (أغلب الانتكاسات بتحصل بالليل)</h2><p>سيب الموبايل بره السرير وشغّل منبه عادي. اقفل الشاشات قبل النوم بساعة. لو مش جايلك نوم، قوم من السرير واعمل حاجة هادية (قراءة أو أذكار) لحد ما تنعس. نام بدري، لأن السهر هو أضعف وقت.</p></div>
+<div class="c"><h2>🔒 حجب المحتوى</h2><p>الويب مينفعش يحجب نيابة عنك، لكن اعمل ده مرة واحدة على موبايلك ولابتوبك:</p><div class="q">آيفون: الإعدادات ← مدة استخدام الجهاز ← قيود المحتوى والخصوصية ← محتوى الويب ← تقييد المواقع الإباحية (Limit Adult Websites)، وخلي حد تثق فيه يحط رمز مدة الاستخدام</div><div class="q">💻 اللابتوب (ويندوز): غيّر DNS في إعدادات الشبكة إلى <b dir="ltr">1.1.1.3</b> و<b dir="ltr">1.0.0.3</b> (Cloudflare Family)، ويفضل تعمله على الراوتر كمان. وثبّت برنامج Cold Turkey Blocker وخلي حد تاني يحط له الباسورد، عشان التخطي يبقى أصعب.</div><div class="q">فعّل SafeSearch في جوجل ويوتيوب، وامسح الحسابات والمواقع اللي بتوصلك للمحتوى، واطلب من حد تثق فيه يحط لك باسورد الإعدادات.</div></div>
+<div class="c"><h2>🤝 شريك المساءلة</h2><input id="pn" placeholder="اسمه" value="${E(S.pt.n)}"><input id="pp" placeholder="رقمه بالكود الدولي، مثال: 2010xxxxxxxx" dir="ltr" value="${E(S.pt.p)}"><button class="b2" onclick="S.pt={n:$('#pn').value,p:$('#pp').value.replace(/\\D/g,'')};sv();draw()">حفظ</button>${S.pt.p?`<a class="b w" style="display:block;text-align:center;text-decoration:none;margin-top:8px" target="_blank" href="https://wa.me/${S.pt.p}?text=${encodeURIComponent('محتاج دعمك دلوقتي، الرغبة عالية. ممكن تكلمني؟')}">ابعتله واتساب (بدون تفاصيل)</a>`:''}</div>
+<div class="c"><h2>🔑 الخصوصية</h2><p class="mu">اسم التطبيق عادي ومش بيلفت النظر. بياناتك على جهازك بس.</p><input id="pin" type="password" inputmode="numeric" placeholder="رقم سري (4 أرقام أو أكتر)"><button class="b2" onclick="setPin()">${S.pin?'تغيير':'تفعيل'} القفل</button>${S.pin?' <button class="b2" onclick="delete S.pin;sv();draw()">إلغاء القفل</button>':''}<p class="mu">القفل ده حماية من الفضول مش تشفير كامل. ومتمسحش بيانات المتصفح عشان بياناتك ما تضيعش.</p><div class="row"><button class="b2" onclick="navigator.clipboard.writeText(JSON.stringify(S)).then(()=>alert('اتنسخت نسخة احتياطية، احفظها في مكان آمن'))">نسخ احتياطي</button><button class="b2" onclick="let t=prompt('الصق النسخة الاحتياطية');try{S=JSON.parse(t);sv();draw()}catch(e){alert('نسخة غير صالحة')}">استرجاع</button></div></div>`;
+if(tab=='i')h=`<div class="c"><h2>📚 معلومات للتوعية</h2>
+<details open><summary>إيه اللي بيحصل في دماغك؟</summary><p>المحتوى الإباحي بيدّي الدماغ جرعة دوبامين عالية وسريعة وجديدة كل مرة. مع التكرار الدماغ بيتعود ويطلب جرعة أقوى وأكتر، ومتعة الحاجات العادية بتقل. الخبر الحلو إن الدماغ مرن وبيرجع يتوازن لما تبطل، والأغلب بيحس بتحسن بعد أسابيع.</p></details>
+<details><summary>الآثار الصحية والنفسية</summary><p>الاستخدام القهري مرتبط في الدراسات بالقلق وقلة التركيز وضعف النوم وانخفاض الرضا عن الحياة والعلاقة. بعض الدراسات بتربط الإفراط في الإباحية بصعوبات جنسية عند الشباب، لكن البحث لسه مش محسوم. العادة نفسها ممكن تتحول لوسيلة هروب من التوتر، وده اللي بيخليها تتكرر. وناس كتير بتحس بصفاء وطاقة وثقة أكتر لما بتقللها.</p></details>
+<details><summary>دايرة الذنب</summary><p>رغبة ← فعل ← ذنب وعار ← توتر ← هروب بنفس الفعل ← رغبة. الذنب نفسه بيغذي الدايرة. اللي بيكسرها هو الفهم والتخطيط، مش جلد الذات.</p></details>
+<details><summary>الرغبة بتعدي لوحدها</summary><p>أي رغبة بتوصل قمتها في 15 إلى 20 دقيقة وبعدين بتنزل. مش مطلوب منك تحاربها، مطلوب تأجّلها وتغيّر مكانك وتصبر الفترة دي. كل مرة بتصمد فيها بتقوّي عضلة الإرادة.</p></details>
+${S.rel?`<details><summary>من القرآن والسنة</summary><div class="q">﴿قُل لِّلْمُؤْمِنِينَ يَغُضُّوا مِنْ أَبْصَارِهِمْ وَيَحْفَظُوا فُرُوجَهُمْ ذَٰلِكَ أَزْكَىٰ لَهُمْ﴾ (النور: 30)</div><div class="q">﴿وَلْيَسْتَعْفِفِ الَّذِينَ لَا يَجِدُونَ نِكَاحًا حَتَّىٰ يُغْنِيَهُمُ اللَّهُ مِن فَضْلِهِ﴾ (النور: 33)</div><div class="q">﴿قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنفُسِهِمْ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ﴾ (الزمر: 53)</div><div class="q">﴿إِنَّ الْحَسَنَاتِ يُذْهِبْنَ السَّيِّئَاتِ﴾ (هود: 114)</div><div class="q">«يا معشر الشباب من استطاع منكم الباءة فليتزوج، ومن لم يستطع فعليه بالصوم فإنه له وجاء» (متفق عليه)</div><div class="q">«كل ابن آدم خطاء، وخير الخطائين التوابون» (الترمذي)</div><p>التوبة مفتوحة دايمًا. الانتكاسة مش نهاية الطريق، قوم بسرعة وكمّل. والصيام والصلاة في وقتها وصحبة صالحة من أقوى المعينين.</p></details>`:''}
+<details><summary>أفكار بتخدعك والرد عليها</summary><div class="q"><b>«مرة واحدة بس»</b><br>مفيش مرة واحدة، دي أول حلقة في السلسلة.</div><div class="q"><b>«مفيش حد هيعرف»</b><br>إنت هتعرف، وإنت اللي هتدفع الثمن.</div><div class="q"><b>«أنا ضعيف وهرجع كده كده»</b><br>الانتكاسة ممكن تتحلل وتتعلم منها، وكل يوم صمدته حقيقي.</div><div class="q"><b>«محتاج أفرّغ توتري»</b><br>التوتر بيخف بالمشي والرياضة والكلام مع حد، ده بيعالج الأصل مش الأعراض.</div></details>
+<label class="ck"><input type="checkbox" ${S.rel?'checked':''} onchange="S.rel=this.checked;sv();draw()"> إظهار المحتوى الديني</label>
+<p class="mu">التطبيق ده مساعد مش بديل للعلاج. لو الموضوع مؤثّر على نفسيتك أو حياتك بشدة، كلم أخصائي نفسي.</p></div>`;
+$('#m').innerHTML=h}
+const T=['📵 الموبايل بره السرير بالليل','🚿 اتحرك أو اتمرن 20 دقيقة','🕌 صليت في وقتها','📖 قريت أو اتعلمت حاجة جديدة','💬 كلمت حد صاحب أو من أهلك'];
+function ckl(){let d=new Date().toDateString(),c=S.ck[d]||[];return T.map((t,i)=>`<label class="ck"><input type="checkbox" ${c[i]?'checked':''} onchange="S.ck={'${d}':(()=>{let a=(S.ck['${d}']||[]);a[${i}]=this.checked;return a})()};sv()"> ${t}</label>`).join('')}
+function ov(h){$('#ov').innerHTML=h?`<div class="ov"><div>${h}</div></div>`:''}
+function sos(){let end=Date.now()+9e2*1e3,tips=['اطلع من الأوضة دلوقتي وغيّر مكانك.','اشرب مية واتوضّا.','سيب الموبايل في أوضة تانية.','اتمشى أو اعمل 20 ضغط.','كلم حد صاحب أو أهلك.','افتكر ليه بدأت وإنت عايز تبقى مين.'];
+ov(`<div class="c" style="text-align:center"><h2>الرغبة موجة وهتعدي</h2><p class="mu">اتنفس ولاحظها من غير ما تنفذها.</p><div class="ring" id="rg">شهيق</div><div class="big" id="cd">15:00</div><p id="tp" style="min-height:52px"></p><p class=mu>إيه اللي حصل؟ اضغط وشوف خطتك:</p>${TR.map((t,i)=>`<span class=chip onclick=plS(${i})>${t}</span>`).join('')}<button class='b2 w' onclick=kitPick()>اعرض حاجة من عدّتي 🎒</button><div id=kt></div><button class="w" onclick="done()">عدّت الرغبة وصمدت ✅</button><button class="b2 w" onclick="clearInterval(tm);ov()">رجوع</button></div>`);
+let i=0;clearInterval(tm);tm=setInterval(()=>{let l=Math.max(0,end-Date.now()),s=Math.floor(l/1e3),e=900-s;$('#cd').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');$('#rg').textContent=e%10<4?'شهيق':'زفير';if(e%20==0||!$('#tp').textContent){$('#tp').textContent=tips[i++%tips.length]}if(!l){clearInterval(tm)}},1000)}
+function done(){clearInterval(tm);urge()}
+function urge(){sel={};ov(`<div class="c"><h2>أحسنت، صمدت قدام الرغبة 💪</h2><p>إيه اللي أثار الرغبة؟</p>${chips('why',R)}<br><br><textarea id="nt" placeholder="ملاحظة (اختياري)"></textarea><button class="w" onclick="S.logs.push({type:'u',t:Date.now(),why:sel.why,note:$('#nt').value});sv();ov();draw()">حفظ</button></div>`)}
+function rel(){sel={};let n=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,16);
+ov(`<div class="c"><h2>خد نفس. اللي حصل معلومة مش فشل.</h2><p class="mu">جاوب بصراحة عشان نفهم نمطك ونقويك المرة الجاية.</p>
+<label>امتى حصلت؟</label><input type="datetime-local" id="wh" value="${n}">
+<p>مسكت نفسك قبلها: <b id="hd">${dur(Date.now()-S.start)}</b></p>
+<label>كام مرة؟</label><input type="number" id="ct" value="1" min="1">
+<label>فين؟</label><select id="pl">${P.map(x=>`<option>${x}</option>`).join('')}</select>
+<label>إيه السبب أو الشعور اللي قبلها؟</label><div>${chips('why',R)}</div><br>
+<label>كنت بتعمل إيه قبلها؟ وإيه اللي كان ممكن يمنعك؟</label><textarea id="nt"></textarea>
+<button class="bd w" onclick="relSave()">سجّل وابدأ من جديد</button><button class="b2 w" onclick="ov()">إلغاء</button></div>`)}
+function relSave(){let w=new Date($('#wh').value).getTime()||Date.now();w=Math.min(w,Date.now());S.best=Math.max(S.best,days());
+S.logs.push({type:'r',t:w,held:Math.max(0,w-S.start),n:+$('#ct').value||1,place:$('#pl').value,why:sel.why,note:$('#nt').value});S.start=w;sv();
+ov(`<div class="c" style="text-align:center"><h2>اتسجلت ✅</h2><p>أطول فترة ليك لسه <b>${S.best} يوم</b> ومحدش يقدر ياخدها منك.</p><p>الانتكاسة بتعلّمنا، شوف تبويب «تحليل» عشان تعرف أضعف نقطة وتحصّنها. وابدأ من دلوقتي بوضوء وصلاة ركعتين لو تحب.</p><button class="w" onclick="ov();tab='a';draw()">شوف التحليل</button></div>`)}
+async function hs(p){try{let b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('nt'+p));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return btoa(p)}}
+async function setPin(){let p=$('#pin').value;if(p.length<4)return alert('4 أرقام على الأقل');S.pin=await hs(p);sv();alert('تم تفعيل القفل');draw()}
+async function lock(){ov(`<div class="c" style="margin-top:20vh;text-align:center"><h2>ملاحظات</h2><input id="lk" type="password" inputmode="numeric" placeholder="الرقم السري" style="text-align:center"><button class="w" onclick="unl()">فتح</button></div>`)}
+async function unl(){if(await hs($('#lk').value)==S.pin){ov()}else{$('#lk').value='';$('#lk').placeholder='غلط'}}
+let G=0,st,ch={};
+const JK=[1,2,3,4,5,6,7,10,14,21,30,45,60,90];
+const JD={
+1:['يا {n}، أول خطوة خلصت. القرار ده أصعب جزء وإنت عملته.','يوم القرار وتجهيز البيئة. الرغبة ممكن تكون عالية.'],
+2:['{n}، لسه ماشي! سؤال: إيه أكتر وقت بتضعف فيه؟ جهّز له خطة.','الرغبات بتيجي في موجات، وتسجيل المحفزات بيكشفها.'],
+3:['خلي بالك يا {n}! النهارده ممكن يبقى يوم صعب. متستسلمش بسهولة، ده اختبار حقيقي.','التالت والرابع من أصعب الأيام عند ناس كتير: توتر وملل ورغبة عالية. اعدّيهم بخطة.'],
+4:['{n}، لو الرغبة لسه عالية فده طبيعي. غيّر مكانك واتحرك فورًا.','ممكن تحس بعصبية أو نوم مش مظبوط، وبيخف مع الوقت.'],
+5:['خمسة أيام يا {n}! إيه حاجة جديدة تعملها النهارده بدل الفراغ؟','ممكن تلاحظ إن الرغبة بتيجي أقل تكرارًا.'],
+6:['{n}، الأسبوع قرّب. حافظ على نومك المبكر، ده حصنك.','تركيزك ومزاجك ممكن يبدأوا يتحسنوا.'],
+7:['أسبوع كامل يا {n}! 🎉 إنت أثبتت إنك تقدر.','أسبوع صمود. ناس كتير بتلاحظ تحسن في النوم والمزاج، وده بيختلف من شخص لشخص.'],
+10:['عشرة أيام يا {n}! بقيت تعرف محفزاتك وتتعامل معاها.','الدايرة القديمة بتضعف وإنت بتبني روتين بديل.'],
+14:['أسبوعين يا {n}! بس خلي بالك من الثقة الزايدة، هي أخطر من الرغبة.','طاقة وتركيز ونوم أهدى عند أغلب الناس بدرجات مختلفة.'],
+21:['ثلاثة أسابيع يا {n}! الروتين الجديد بقى أسهل.','العادات الجديدة بتثبت والروتين البديل بقى طبيعي.'],
+30:['شهر كامل يا {n}! 👏 إنت غيرت حاجة حقيقية جواك.','علاقتك بالرغبة وبنفسك اتغيرت وثقتك أعلى.'],
+45:['{n}، خمسة وأربعين يوم! بقيت قدوة لنفسك.','الصمود بقى جزء من هويتك.'],
+60:['شهرين يا {n}! إنت أقوى مما كنت فاكر.','استقرار أكبر في المزاج والتركيز والعلاقات.'],
+90:['تسعين يوم يا {n}! 👑 إنت اتغيرت فعلًا.','ثلاثة شهور من الثبات. كمّل وساعد غيرك.']};
+const TT=[[0,'مبتدئ شجاع'],[3,'الصامد'],[7,'المحارب'],[14,'الفارس'],[30,'الأسد'],[60,'الجبل'],[90,'القائد']];
+const ttl=()=>'🏅 '+TT.filter(t=>days()>=t[0]).pop()[1],av=()=>['🧍','🚶','🏃','🧗','🦁','⛰️','👑'][TT.filter(t=>days()>=t[0]).length-1],dn=()=>days()+1,ky=()=>JK.filter(k=>k<=dn()).pop()||1,jm=()=>JD[ky()][0].replace('{n}',E(S.name));
+function greet(){if(G)return G;let n=E(S.name),h=new Date().getHours(),p=h<12?'صباح الخير':h<18?'نهارك سعيد':'مساء الخير',a=[`${p} يا ${n}! إنت هنا يعني لسه بتحارب، وده بطولة.`,`نورت يا ${n} 🌟 كل دخول هنا بيقرّبك من النسخة اللي عايزها من نفسك.`,`${p} يا بطل ${n}. النهارده يوم جديد وفرصة جديدة.`,`يا ${n}، إنت مش لوحدك. كمّل خطوة خطوة.`,`أهلاً ${n}! اللي بيرجع كل يوم بيبني شخصية مش بس عادة.`,S.age?`${p} يا ${n}. في سن الـ${S.age} قدامك عمر كامل تبنيه صح 💪`:`${p} يا ${n}. إنت بتبني مستقبلك دلوقتي 💪`];return G=a[Math.floor(Math.random()*a.length)]}
+function jr(){let d=dn(),c=ky(),Q=['إيه أكتر سبب خلاك تبدأ؟','مين الشخص اللي عايز تبقاه بعد 90 يوم؟','إيه اللي ممكن تعمله النهارده بدل وقت الفراغ؟','مين ممكن تتصل بيه لو الرغبة عالية؟'];return `<div class=c><h2>رحلة التعافي، اليوم رقم ${d}</h2><div class=q>سؤال النهارده: ${Q[d%4]}</div></div><div class=c>`+JK.map(k=>`<div class='nd ${k<c?'p':''} ${k==c?'cu':''} ${k>c?'f':''}'><b>${k==c?av():k<c?'✅':'🔒'} اليوم ${k}</b><div class=mu>${JD[k][1]}</div>${k==c?`<div class=q>${jm()}</div>`:''}</div>`).join('')+`</div>`}
+function onb(){ov(`<div class=c style='margin-top:10vh'><h2>أهلاً بيك 👋</h2><p>الأول نتعرف.</p><input id=on placeholder='اسمك'><input id=oa type=number placeholder='سنك' min=10 max=99><input id=od placeholder='حلمك أو اللي نفسك توصله'><input id=ok placeholder='حاجة بتهدّيك (جملة مؤثرة أو رابط فيديو محدد)'><button class=w onclick=onbS()>يلا نبدأ</button></div>`)}
+function onbS(){let n=$('#on').value.trim();if(!n)return;S.name=n;S.age=+$('#oa').value||0;S.dream=$('#od').value.trim();let k=$('#ok').value.trim();if(k)S.kit=[k];G=0;sv();ov();draw()}
+function blkOn(){S.blk=true;sv();draw()}
+function unb(){ch={r:0,t:Date.now()};chr()}
+async function cam(){try{st=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});let v=$('#vd');v.srcObject=st;v.style.display='block'}catch(e){let m=$('#cm');if(m)m.textContent='الكاميرا مش متاحة، كمّل بالعدّاد.'}}
+function stp(){if(st)st.getTracks().forEach(t=>t.stop());st=null}
+function chr(){ch.c=0;let x=['ضغط','بطن','سكوات','جامبينج جاك'][ch.r%4];stp();ov(`<div class=c><h2>قبل ما توقف الحجب</h2><p>الرغبة اللحظية بتعدي. اعمل التحدي وبعدين قرر بعقل هادي.</p><video id=vd autoplay playsinline muted style='display:none;width:100%;border-radius:12px;transform:scaleX(-1)'></video><p id=cm class=mu>الكاميرا مراية بس، مفيش تسجيل ولا تخزين.</p><h2>اعمل 20 ${x} دلوقتي</h2><div class=big id=cc>0 / 20</div><button class=w onclick=cnt()>+1 عدّة</button><div id=nx style='display:none'><p>الرغبة دلوقتي من 0 لـ 10: <b id=rv>5</b></p><input type=range id=rg2 min=0 max=10 value=5 oninput=rvu(this)><button class=w onclick=chk()>تأكيد</button></div><button class='b2 w' onclick=keep()>غيرت رأيي، هكمل بالحجب</button></div>`);cam()}
+function cnt(){ch.c++;$('#cc').textContent=ch.c+' / 20';if(ch.c>=20)$('#nx').style.display='block'}
+function rvu(e){$('#rv').textContent=e.value}
+function keep(){stp();ov()}
+function chk(){let v=+$('#rg2').value,l=18e4-(Date.now()-ch.t);if(v>4){ch.r++;alert('الرغبة لسه عالية، كمّل جولة تانية. إنت أقوى منها.');chr();return}if(l>0){alert('استنى '+Math.ceil(l/6e4)+' دقيقة كمان وخد نفس، وبعدين أكّد.');return}S.blk=false;sv();stp();ov();draw()}
+const TR=['ضغط أو موقف ضايقني','حاجة كنت عايزها ومحصلتش','ملل','لوحدي في الشقة','نظرة أو مشهد مثير','خنقة بعد كام يوم صمود'],DF=['اقفل اللابتوب، اخرج امشي 20 دقيقة، وفضفض لأي حد','افتكر إن اللي فات مش بيتعوض بالعادة، وغيّر مكانك','اتحرك: ضغط أو مشي وبدّل النشاط','اطلع من الشقة أو اقعد مع الأهل وارجع بعدين','اصرف نظرك فورًا واقرأ جملتك المؤثرة','دي خنقة طبيعية وبتعدي. SOS وتمرين وافتكر حلمك'];
+function kh(k){return /^https?:/.test(k)?`<a href="${E(k)}" target=_blank rel=noopener>${E(k)}</a>`:E(k)}
+function kitUI(){S.kit=S.kit||[];S.pl=S.pl||{};return `<div class=c><h2>🎒 عدّة التهدئة بتاعتك</h2><p class=mu>حط اللي بيهدّيك فعلًا: جملة بتأثر فيك أو رابط فيديو معين. الأفضل رابط فيديو محدد مش تصفح تيك توك المفتوح، لأن التمرير المتواصل ممكن يطلعلك مقطع يثيرك.</p><label>حلمي</label><input value="${E(S.dream)}" placeholder='نفسي أبقى...' onchange=sd(this)>${S.kit.map((k,i)=>`<div class=q>${kh(k)} <span onclick=kd(${i})>✖</span></div>`).join('')}<input id=ki placeholder='جملة أو رابط'><button class=b2 onclick=ka()>إضافة للعدّة</button></div><div class=c><h2>📋 خطتي: لو حصل كذا أعمل كذا</h2><p class=mu>اكتبها وإنت هادي، وهتظهر لك في SOS.</p>${TR.map((t,i)=>`<label>${t}</label><input value="${E(S.pl[t])}" placeholder="${DF[i]}" onchange=sp(this,${i})>`).join('')}</div>`}
+function sd(e){S.dream=e.value;sv()}
+function ka(){let v=$('#ki').value.trim();if(v){S.kit.push(v);sv();draw()}}
+function kd(i){S.kit.splice(i,1);sv();draw()}
+function sp(e,i){S.pl[TR[i]]=e.value;sv()}
+function kitPick(){let a=(S.kit||[]).map(kh);if(S.dream)a.push('🎯 حلمك: '+E(S.dream));$('#kt').innerHTML=`<div class=q>${a.length?a[Math.floor(Math.random()*a.length)]:'ضيف حاجات لعدّتك من تبويب الخطة'}</div>`}
+function plS(i){$('#kt').innerHTML=`<div class=q>${E(S.pl&&S.pl[TR[i]]||DF[i])}</div>`}
+draw();if(!S.name)onb();if(S.pin)lock();
+</script></body></html>
